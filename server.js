@@ -18,10 +18,10 @@ client.on('ready', () => {
 // Create an event listener for messages
 client.on('message', message =>
 {
-    if (!message.content.startsWith(prefix) || message.author.bot) return; // Disregards message if it does not begin with the command prefix and that the user is not a bot
+//    if (!message.content.startsWith(prefix) || message.author.bot) return; // Disregards message if it does not begin with the command prefix and that the user is not a bot
 
-    const msgArgs = message.content.slice(prefix.length).split(/ +/);// argumentss becomes an array containing every word after the initial command
-    const commandName = msgArgs.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
+//    const msgArgs = message.content.slice(prefix.length).split(/ +/);// argumentss becomes an array containing every word after the initial command
+//    const commandName = msgArgs.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
 
     try {
         // If the message is "ping"
