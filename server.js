@@ -59,13 +59,13 @@ client.on('message', message => {
         message.channel.send('Uptime: ' + user.client.uptime);
       });
     }
-    if (message.content.startsWith('%blackrosereaction') && 
+    if (message.content.startsWith('%blackrosereaction') &&
         message.author.id === '250726130196283392') {
-      var guild = message.guild;
-      var filter = (reaction, user) => reaction.emoji.id === '526279145739517953';
-      console.log(`Command fired, ${guild}`);
-      var collector = message.createReactionCollector(filter);
-      collector.on('collect', function(r) {
+        var guild = message.guild;
+        var filter = (reaction) => reaction.emoji.id === '526279145739517953';
+        console.log(`Command fired, ${guild}`);
+        var collector = message.createReactionCollector(filter);
+        collector.on('collect', function(r) {
         console.log("Collected Reaction");
         guild.member(r.users.last()).addRole('526274349687111690');
       });
@@ -91,7 +91,7 @@ client.login(process.env.SECRET);
 
 var express = require('express');
 var app = express();
-app.get("/", (request, response) => {
+app.get("/", (response) => {
   response.sendStatus(200);
 });
 app.listen(process.env.PORT);
