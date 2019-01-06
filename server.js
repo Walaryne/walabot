@@ -36,9 +36,6 @@ client.on('message', message => {
     if (message.content === 'ya better run, better run...') {
       message.channel.send('https://www.youtube.com/watch?v=rnO-MflYxCw');
     }
-    if (message.content === 'up up down down left right left right b a start') {
-      message.channel.send('https://www.youtube.com/watch?v=L3LaKy1fsw8');
-    }
     if (message.content === 'I need some yandere chicks to look at me creepily whilst listening to good music') {
       message.channel.send('https://www.youtube.com/watch?v=uuBETyA_yxc');
     }
