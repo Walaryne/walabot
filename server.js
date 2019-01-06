@@ -58,10 +58,19 @@ client.on('message', message => {
         }
         if (message.content.startsWith('%blackrosereaction') &&
             message.author.id === '250726130196283392') {
-            var guild = message.guild;
+
             var filter = (reaction) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
-            var collector = message.createReactionCollector(filter);
+            var collector;
+            var guild = message.guild;
+            var parse = message.content.split(' ');
+            if(parse[1] === "refresh") {
+                var msgObj = guild.channels.get(parse[2])
+                .fetchMessage(parse[3]);
+                collector = msgObj.createReactionCollector(filter);
+            } else {
+                collector = message.createReactionCollector(filter);
+            }
             collector.on('collect', function(r) {
                 console.log("Collected Reaction");
                 guild.member(r.users.last()).addRole('526274349687111690');
