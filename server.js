@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
+const prefix = require('./config.json').prefix; // Declares constant variable with prefix as value
 
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
@@ -13,7 +14,13 @@ client.on('ready', () => {
 });
 
 // Create an event listener for messages
-client.on('message', message => {
+client.on('message', message => 
+{
+    if (!message.content.startsWith(prefix) || message.author.bot) return; // Disregards message if it does not begin with the command prefix and that the user is not a bot
+
+    const arguments = message.content.slice(prefix.length).split(/ +/);// argumentss becomes an array containing every word after the initial command
+    const commandName = args.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
+
     try {
         // If the message is "ping"
         if (message.content === 'ping') {
