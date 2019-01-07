@@ -74,9 +74,10 @@ client.on('message', message =>
             var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
             if(parse[1] === "refresh") {
-                var msgObj = guild.channels.get(parse[2])
-                .fetchMessage(parse[3]);
-                collector = msgObj.createReactionCollector(filter);
+                guild.channels.get(parse[2])
+                .fetchMessage(parse[3]).then(function(msgObj) {
+                    collector = msgObj.createReactionCollector(filter);
+                })
             } else {
                 collector = message.createReactionCollector(filter);
             }
