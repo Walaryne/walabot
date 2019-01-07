@@ -1,7 +1,9 @@
 const Discord = require('discord.js');
+const fs = require('fs'); // Imports fs, NodeJS File System - required for dynamic reading
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
+const cooldowns = new Discord.Collection(); 
 //const prefix = require('./config.json').prefix; // Declares constant variable with prefix as value
 
 //NOTE: Keep the above statement commented out UNTIL the file contains valid JSON
@@ -28,61 +30,85 @@ for (const file of commandFiles) // Runs through the aforementioned array and im
 // Create an event listener for messages
 client.on('message', message =>
 {
+    //#region multi-word-commands
+    switch (message.content)
+    {
+        case 'All the other kids...':
+            message.channel.send('with the pumped up kicks...');
+            break;
+        case 'ya better run, better run...':
+            message.channel.send('https://www.youtube.com/watch?v=rnO-MflYxCw');
+            break;
+        case 'I need some yandere chicks to look at me creepily whilst listening to good music':
+            message.channel.send('https://www.youtube.com/watch?v=uuBETyA_yxc');
+            break;
+        case 'noot noot':
+            message.channel.send('https://www.youtube.com/watch?v=a4VvRWTD3Ok');
+            break;
+        case "Who's your daddy Walabot?":
+            message.channel.send('😍 Walaryne is my daddy.'); // swapped to unicode emoji; will still render as discord one
+            break;
+        case 'You reposted in the wrong neighborhood':
+            message.channel.send('https://www.youtube.com/watch?v=4feUSTS21-8');
+            break;
+
+    }
+    //#endregion
+
+    //#region parser+command-handler
     if (!message.content.startsWith(prefix) || message.author.bot) return; // Disregards message if it does not begin with the command prefix and that the user is not a bot
 
-    /* NOTE: This should be the location of the Switch/Case as it is AFTER parsing the message enough
-       to check if it has the command prefix but BEFORE actually changing the message with formatting 
-       and sorting into variables. --Ben*/
-
+    
     const msgArgs = message.content.slice(prefix.length).split(/ +/);// argumentss becomes an array containing every word after the initial command
     const commandName = msgArgs.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
 
     if (!client.commands.has(commandName) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))) // Checks to see if the command exists / alias exists
     {
-        message.reply(`🤔 I-I'm not sure what ${command} means ;-;`);
+        message.reply(`🤔 I-I'm not sure what ${command} means ;-;`); 
         return;
     } 
 
+    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName)); // retrieves actual command from module
+    if (!command) return; // Uses psuedotruth to return on null value
+
+    if (!cooldowns.has(command.name)) // Checks to see if the command is on cooldown
+    {
+        cooldowns.set(command.name, new Discord.Collection()); // Adds the command to the cooldowns object 
+    }
+    
+    const now = Date.now(); // gets current time to initiate the cooldown
+    // Taken from the discord documentation, I don't follow but my tests indicate it works
+    const timestamps = cooldowns.get(command.name); 
+    const cooldownAmount = (command.cooldown || 3) * 1000;
+
+    if (timestamps.has(message.author.id)) 
+    {
+        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+        if (now < expirationTime) 
+        {
+            const timeLeft = (expirationTime - now) / 1000;
+            return message.reply(`AAAAAAAAAAA! Too fast! Give me ${timeLeft.toFixed(1)} seconds before running \`${command.name}\` again!.`);
+        }
+
+    }
+
+    timestamps.set(message.author.id, now);
+    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
     try {
-        // If the message is "ping"
-        /*if (message.content === 'ping') {
-            // Send "pong" to the same channel
-            message.channel.send('pong');
-        }
-        if (message.content.startsWith('%eval') && message.author.id === '250726130196283392') {
-            message.channel.send(eval(message.content.slice(5)) + '  < EVALUATED JAVASCRIPT');
-        }
-        if (message.content.startsWith('peternortonisgod')) {
-            var richtext = new Discord.RichEmbed()
-                .setImage('http://www.technologizer.com/wp-content/uploads/2014/06/image5.jpg')
-                .addField('Hallo', 'i am ur god, here iz https://hentaihaven.org/', true)
-                .setURL('https://www.hentaihaven.org');
-            message.channel.send(richtext);
-        }*/ // NOW REDUNDANT - MIGRATED
+        command.execute(message, args); // actually executes the command
+    }
+    catch (error) {
+        console.error(error);
+        message.reply(`Uwaaa! I think I dropped something...`);
+    }
+    //#endregion
 
-        // So after porting half of this i realised the spaces won't be supported by the parser. Will contact later. //
-        if (message.content === 'All the other kids...') {
-            message.channel.send('with the pumped up kicks...')
-        }
-        if (message.content === 'ya better run, better run...') {
-            message.channel.send('https://www.youtube.com/watch?v=rnO-MflYxCw');
-        }
-        if (message.content === 'I need some yandere chicks to look at me creepily whilst listening to good music') {
-            message.channel.send('https://www.youtube.com/watch?v=uuBETyA_yxc');
-        }
-        if (message.content === 'noot noot') {
-            message.channel.send('https://www.youtube.com/watch?v=a4VvRWTD3Ok');
-        }
-        if (message.content === "Who's your daddy Walabot?") {
-            message.channel.send(':heart_eyes: Walaryne is my daddy.');
-        }
-        if (message.content === 'You reposted in the wrong neighborhood') {
-            message.channel.send('https://www.youtube.com/watch?v=4feUSTS21-8');
-        }
-
-
-        /*if (message.content.startsWith('%whois')) {
+    //#region RedundantCode
+    /*try {             // ALL OF THIS CODE IS REDUNDANT BUT KEPT UNTIL MY OWN IS PROVEN TO BE ROBUST
+        
+        if (message.content.startsWith('%whois')) {
             client.fetchUser(message.content.slice(7), false).then(function(user) {
                 message.channel.send(user.username);
                 message.channel.send('Joined: ' + user.createdAt);
@@ -115,11 +141,12 @@ client.on('message', message =>
                     guild.member(r.users.last()).addRole('526274349687111690');
                 });
             }
-        }*/
+        }
     } catch (err) {
         console.log(err);
-    }
-});
+    }*/
+//#endregion
+}); 
 
 client.on('guildCreate', guild => {
     try {
