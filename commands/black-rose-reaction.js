@@ -2,15 +2,13 @@ module.exports = {
     name: 'blackrosereaction',
     description: 'Ryn, youre gonna have to explain this one lol',
     cooldown: 2,
-    execute(message, args, client) {
+    execute(message, args, _) {
         if (message.author.id === '250726130196283392') {
-            var guild = message.guild;
-            var parse = message.content.split(' ');
             var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
-            if (parse[1] === "refresh") {
-                guild.channels.get(parse[2])
-                    .fetchMessage(parse[3]).then(function(msgObj) {
+            if (args[0] === "refresh") {
+                guild.channels.get(args[1])
+                    .fetchMessage(args[2]).then(function(msgObj) {
                         var collector = msgObj.createReactionCollector(filter);
                         collector.on('collect', function(r) {
                             console.log("Collected Reaction");
