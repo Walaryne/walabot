@@ -68,7 +68,7 @@ client.on('message', message =>
         if (message.content.startsWith('%blackrosereaction') &&
             message.author.id === '250726130196283392') {
 
-            var filter = (reaction) => reaction.emoji.id === '526279145739517953';
+            var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
             var collector;
             var guild = message.guild;
