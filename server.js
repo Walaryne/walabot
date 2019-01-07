@@ -68,11 +68,11 @@ client.on('message', message =>
         if (message.content.startsWith('%blackrosereaction') &&
             message.author.id === '250726130196283392') {
 
+            var guild = message.guild;
+            var collector;
+            var parse = message.content.split(' ');
             var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
-            var collector;
-            var guild = message.guild;
-            var parse = message.content.split(' ');
             if(parse[1] === "refresh") {
                 var msgObj = guild.channels.get(parse[2])
                 .fetchMessage(parse[3]);
