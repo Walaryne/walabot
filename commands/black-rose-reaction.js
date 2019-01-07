@@ -15,8 +15,8 @@ module.exports = {
                             console.log("Collected Reaction");
                             guild.member(r.users.last()).addRole('526274349687111690');
                         });
-                        console.log(`Sucessfully attached to message ${parse[3]} in channel ${parse[2]}`);
-                        message.channel.send(`Sucessfully attached to message ${parse[3]} in channel ${parse[2]}`);
+                        console.log(`Sucessfully attached to message ${args[2]} in channel ${args[1]}`);
+                        message.channel.send(`Sucessfully attached to message ${args[2]} in channel ${args[1]}`);
                     });
             } else {
                 var collector = message.createReactionCollector(filter);
