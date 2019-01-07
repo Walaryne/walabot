@@ -2,7 +2,9 @@ const Discord = require('discord.js');
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
-const prefix = require('./config.json').prefix; // Declares constant variable with prefix as value
+//const prefix = require('./config.json').prefix; // Declares constant variable with prefix as value
+
+//NOTE: Keep the above statement commented out UNTIL the file contains valid JSON
 
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
@@ -14,12 +16,12 @@ client.on('ready', () => {
 });
 
 // Create an event listener for messages
-client.on('message', message => 
+client.on('message', message =>
 {
-    if (!message.content.startsWith(prefix) || message.author.bot) return; // Disregards message if it does not begin with the command prefix and that the user is not a bot
+//    if (!message.content.startsWith(prefix) || message.author.bot) return; // Disregards message if it does not begin with the command prefix and that the user is not a bot
 
-    const arguments = message.content.slice(prefix.length).split(/ +/);// argumentss becomes an array containing every word after the initial command
-    const commandName = args.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
+//    const msgArgs = message.content.slice(prefix.length).split(/ +/);// argumentss becomes an array containing every word after the initial command
+//    const commandName = msgArgs.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
 
     try {
         // If the message is "ping"
@@ -65,14 +67,29 @@ client.on('message', message =>
         }
         if (message.content.startsWith('%blackrosereaction') &&
             message.author.id === '250726130196283392') {
+
             var guild = message.guild;
-            var filter = (reaction) => reaction.emoji.id === '526279145739517953';
+            var parse = message.content.split(' ');
+            var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
-            var collector = message.createReactionCollector(filter);
-            collector.on('collect', function(r) {
-                console.log("Collected Reaction");
-                guild.member(r.users.last()).addRole('526274349687111690');
-            });
+            if(parse[1] === "refresh") {
+                guild.channels.get(parse[2])
+                .fetchMessage(parse[3]).then(function(msgObj) {
+                    var collector = msgObj.createReactionCollector(filter);
+                    collector.on('collect', function(r) {
+                        console.log("Collected Reaction");
+                        guild.member(r.users.last()).addRole('526274349687111690');
+                    });
+                    console.log(`Sucessfully attached to message ${parse[3]} in channel ${parse[2]}`);
+                    message.channel.send(`Sucessfully attached to message ${parse[3]} in channel ${parse[2]}`);
+                });
+            } else {
+                var collector = message.createReactionCollector(filter);
+                collector.on('collect', function(r) {
+                    console.log("Collected Reaction");
+                    guild.member(r.users.last()).addRole('526274349687111690');
+                });
+            }
         }
     } catch (err) {
         console.log(err);
@@ -95,7 +112,7 @@ client.login(process.env.SECRET);
 
 var express = require('express');
 var app = express();
-app.get("/", (response) => {
+app.get("/", (_, response) => {
     response.sendStatus(200);
 });
 app.listen(process.env.PORT);
