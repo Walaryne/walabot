@@ -54,8 +54,8 @@ client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return; // Disregards message if it does not begin with the command prefix and that the user is not a bot
 
 
-    const msgArgs = message.content.slice(prefix.length).split(/ +/); // argumentss becomes an array containing every word after the initial command
-    const commandName = msgArgs.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
+    const args = message.content.slice(prefix.length).split(/ +/); // argumentss becomes an array containing every word after the initial command
+    const commandName = args.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
 
     if (!client.commands.has(commandName) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))) { // Checks to see if the command exists / alias exists
         message.reply(`🤔 I-I'm not sure what ${command} means ;-;`);
