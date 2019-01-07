@@ -76,7 +76,9 @@ client.on('message', message =>
             if(parse[1] === "refresh") {
                 guild.channels.get(parse[2])
                 .fetchMessage(parse[3]).then(function(msgObj) {
+                    console.log(msgObj.content)
                     collector = msgObj.createReactionCollector(filter);
+                    console.log(collector);
                 })
             } else {
                 collector = message.createReactionCollector(filter);
