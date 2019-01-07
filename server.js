@@ -69,24 +69,27 @@ client.on('message', message =>
             message.author.id === '250726130196283392') {
 
             var guild = message.guild;
-            var collector;
             var parse = message.content.split(' ');
             var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
             if(parse[1] === "refresh") {
                 guild.channels.get(parse[2])
                 .fetchMessage(parse[3]).then(function(msgObj) {
-                    console.log(msgObj.content)
-                    collector = msgObj.createReactionCollector(filter);
+                    console.log(msgObj.content);
+                    var collector = msgObj.createReactionCollector(filter);
+                    collector.on('collect', function(r) {
+                        console.log("Collected Reaction");
+                        guild.member(r.users.last()).addRole('526274349687111690');
+                    });
                     console.log(collector);
-                })
+                });
             } else {
-                collector = message.createReactionCollector(filter);
+                var collector = message.createReactionCollector(filter);
+                collector.on('collect', function(r) {
+                    console.log("Collected Reaction");
+                    guild.member(r.users.last()).addRole('526274349687111690');
+                });
             }
-            collector.on('collect', function(r) {
-                console.log("Collected Reaction");
-                guild.member(r.users.last()).addRole('526274349687111690');
-            });
         }
     } catch (err) {
         console.log(err);
