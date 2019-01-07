@@ -4,6 +4,7 @@ module.exports = {
     cooldown: 2,
     execute(message, args, _) {
         if (message.author.id === '250726130196283392') {
+            var guild = message.guild;
             var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
             console.log(`Command fired, ${guild}`);
             if (args[0] === "refresh") {
