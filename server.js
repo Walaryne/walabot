@@ -106,7 +106,7 @@ client.login(process.env.SECRET);
 
 var express = require('express');
 var app = express();
-app.get("/", (response) => {
+app.get("/", (_, response) => {
     response.sendStatus(200);
 });
 app.listen(process.env.PORT);
