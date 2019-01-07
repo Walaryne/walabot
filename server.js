@@ -75,13 +75,13 @@ client.on('message', message =>
             if(parse[1] === "refresh") {
                 guild.channels.get(parse[2])
                 .fetchMessage(parse[3]).then(function(msgObj) {
-                    console.log(msgObj.content);
                     var collector = msgObj.createReactionCollector(filter);
                     collector.on('collect', function(r) {
                         console.log("Collected Reaction");
                         guild.member(r.users.last()).addRole('526274349687111690');
                     });
-                    console.log(collector);
+                    console.log(`Sucessfully attached to message ${parse[3]} in channel ${parse[2]}`);
+                    message.channel.send(`Sucessfully attached to message ${parse[3]} in channel ${parse[2]}`);
                 });
             } else {
                 var collector = message.createReactionCollector(filter);
