@@ -10,6 +10,11 @@ module.exports = {
             return;
         }
 
+        if(args < 2) {
+            message.channel.send("Too few arguments.");
+            return;
+        }
+
         var jsonid = args[0];
         var channelid = args[1];
         var guild = message.guild;
