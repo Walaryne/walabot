@@ -50,7 +50,7 @@ module.exports = {
         function unNotifCallback(channelmsg) {
             if(channelmsg.content === `^unnotifystream ${username}`) {
                 console.log("Callback succeeded.");
-                channelmessage.channel.send(`Notifier for ${username}'s stream has been disconnected.`);
+                channelmsg.channel.send(`Notifier for ${username}'s stream has been disconnected.`);
                 client.off('message', unNotifCallback);
                 ca.close();
             }
