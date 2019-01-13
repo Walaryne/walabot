@@ -45,10 +45,12 @@ module.exports = {
             lastUpdateTime = Date.now();
         });
 
+        message.channel.send("`Watching for ${username}'s stream!'`");
+
         function unNotifCallback(channelmsg) {
             if(channelmsg.content.startsWith(`^unnotifystream ${username}`)) {
-                channelmessage.send(`Notifier for ${username}'s stream has been disconnected.'`);
-                client.off('message', unNotifCallback)
+                channelmessage.channel.send(`Notifier for ${username}'s stream has been disconnected.'`);
+                client.off('message', unNotifCallback);
             }
         }
 
