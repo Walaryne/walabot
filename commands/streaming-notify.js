@@ -20,6 +20,8 @@ module.exports = {
         var username = args[2];
         var guild = message.guild;
         var channel = guild.channels.get(channelid);
+        var timeval;
+        var doublesendflag = 0;
         const Carina = require('carina').Carina;
         const ws = require('ws');
 
@@ -28,11 +30,18 @@ module.exports = {
         const ca = new Carina({ isBot: true }).open();
 
         ca.subscribe(`channel:${jsonid}:update`, data => {
-            console.log('Channel update', data);
-            if(data.online == true) {
-                channel.send(`${username} is currently streaming on Mixer!`)
+            timeval = Date.now();
+            if(Date.now() < (timeval + 2000)) {
+                doublesendflag = 1;
             } else {
-                channel.send(`${username}'s stream has ended!'`)
+                doublesendflag = 0;
+            }
+            console.log('Channel update', data);
+            if(data.online == true && doublesendflag === 0) {
+                channel.send(`${username} is currently streaming on Mixer!`);
+            }
+            if(data.online == false && doublesendflag === 0) {
+                channel.send(`${username}'s stream has ended!`);
             }
         });
 
