@@ -3,7 +3,7 @@ module.exports = {
     description: 'Attaches a notification system when someone is streaming on Mixer.',
     aliases: ["sn"],
     cooldown: 2,
-    execute(message, args, _) {
+    execute(message, args, client) {
 
         if(message.author.id !== '250726130196283392') {
             message.channel.send("You don't have access to this command.");
@@ -44,6 +44,15 @@ module.exports = {
             }
             lastUpdateTime = Date.now();
         });
+
+        function unNotifCallback(channelmsg) {
+            if(channelmsg.content.startsWith(`%unnotifystream ${username}`)) {
+                channelmessage.send(`Notifier for ${username}'s stream has been disconnected.'`);
+                client.off('message', unNotifCallback)
+            }
+        }
+
+        client.on('message', unNotifCallback);
 
     }
 }
