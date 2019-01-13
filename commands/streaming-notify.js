@@ -10,13 +10,14 @@ module.exports = {
             return;
         }
 
-        if(args < 2) {
+        if(args < 3) {
             message.channel.send("Too few arguments.");
             return;
         }
 
         var jsonid = args[0];
         var channelid = args[1];
+        var username = args[2];
         var guild = message.guild;
         var channel = guild.channels.get(channelid);
         const Carina = require('carina').Carina;
@@ -28,6 +29,11 @@ module.exports = {
 
         ca.subscribe(`channel:${jsonid}:update`, data => {
             console.log('Channel update', data);
+            if(data.online == true) {
+                channel.send(`${username} is currently streaming on Mixer!`)
+            } else {
+                channel.send(`${username}'s stream has ended!'`)
+            }
         });
 
     }
