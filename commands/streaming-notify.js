@@ -20,7 +20,7 @@ module.exports = {
         var username = args[2];
         var guild = message.guild;
         var channel = guild.channels.get(channelid);
-        var timeval;
+        var lastUpdateTime = Date.now() + 2001;
         var doublesendflag = 0;
         const Carina = require('carina').Carina;
         const ws = require('ws');
@@ -30,8 +30,7 @@ module.exports = {
         const ca = new Carina({ isBot: true }).open();
 
         ca.subscribe(`channel:${jsonid}:update`, data => {
-            timeval = Date.now();
-            if(Date.now() < (timeval + 2000)) {
+            if(Date.now() < (lastUpdateTime + 2000)) {
                 doublesendflag = 1;
             } else {
                 doublesendflag = 0;
@@ -43,6 +42,7 @@ module.exports = {
             if(data.online == false && doublesendflag === 0) {
                 channel.send(`${username}'s stream has ended!`);
             }
+            lastUpdateTime = Date.now();
         });
 
     }
