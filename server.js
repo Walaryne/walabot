@@ -58,7 +58,7 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase() // The initial command has the prefix removed and is shifted to lower case, and is assigned to commandName
 
     if (!client.commands.has(commandName) && !client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))) { // Checks to see if the command exists / alias exists
-        message.reply(`🤔 I-I'm not sure what ${command} means ;-;`);
+        message.reply(`🤔 I-I'm not sure what ${commandName} means ;-;`);
         return;
     }
 
