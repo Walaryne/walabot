@@ -3,7 +3,7 @@ module.exports = {
     description: 'gets info on a specified user',
     aliases: ["user", "userinfo"],
     cooldown: 2,
-    execute(message, args, client, _) {
+    execute(message, args, client) {
         client.fetchUser(args[0], false).then(function(user) {
             message.channel.send(user.username);
             message.channel.send('Joined: ' + user.createdAt);
