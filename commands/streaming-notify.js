@@ -45,7 +45,7 @@ module.exports = {
             if(data.online == false && doublesendflag === 0) {
                 var embed = new Discord.RichEmbed()
                 .setTitle("Stream Notification")
-                .addField("Started Streaming: ", `${username}`);
+                .addField("Stopped Streaming: ", `${username}`);
                 channel.send(embed);
             }
             lastUpdateTime = Date.now();
