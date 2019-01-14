@@ -87,7 +87,7 @@ client.on('message', message => {
     setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
     try {
-        command.execute(message, args, client); // actually executes the command
+        command.execute(message, args, client, Discord); // actually executes the command
     } catch (error) {
         console.error(error);
         message.reply(`Uwaaa! I think I dropped something...`);

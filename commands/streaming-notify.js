@@ -3,7 +3,7 @@ module.exports = {
     description: 'Attaches a notification system when someone is streaming on Mixer.',
     aliases: ["sn"],
     cooldown: 2,
-    execute(message, args, client) {
+    execute(message, args, client, Discord) {
 
         if(message.author.id !== '250726130196283392') {
             message.channel.send("You don't have access to this command.");

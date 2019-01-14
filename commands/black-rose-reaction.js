@@ -2,7 +2,7 @@ module.exports = {
     name: 'blackrosereaction',
     description: 'Ryn, youre gonna have to explain this one lol',
     cooldown: 2,
-    execute(message, args, _) {
+    execute(message, args, _, _) {
         if (message.author.id === '250726130196283392') {
             var guild = message.guild;
             var filter = (reaction, _) => reaction.emoji.id === '526279145739517953';
