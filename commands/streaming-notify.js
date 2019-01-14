@@ -37,10 +37,16 @@ module.exports = {
             }
             console.log('Channel update', data);
             if(data.online == true && doublesendflag === 0) {
-                channel.send(`${username} is currently streaming on Mixer!`);
+                var embed = new Discord.RichEmbed()
+                .setTitle("Stream Notification")
+                .addField("Started Streaming: ", `${username}`);
+                channel.send(embed);
             }
             if(data.online == false && doublesendflag === 0) {
-                channel.send(`${username}'s stream has ended!`);
+                var embed = new Discord.RichEmbed()
+                .setTitle("Stream Notification")
+                .addField("Started Streaming: ", `${username}`);
+                channel.send(embed);
             }
             lastUpdateTime = Date.now();
         });
